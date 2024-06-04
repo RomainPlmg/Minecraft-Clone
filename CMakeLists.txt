@@ -11,7 +11,6 @@ find_package(OpenGL REQUIRED)
 set(EXEC_SOURCES
     src/glad/glad.c
 
-    src/utils/Vector2.cpp
     src/utils/Timer.cpp
 
     src/gfx/IndexBuffer.cpp
@@ -26,6 +25,7 @@ set(EXEC_SOURCES
     src/Cube.cpp
     src/Game.cpp
     src/Main.cpp
+    src/Transformable.cpp
 )
 
 # Add the GLFW library

@@ -1,22 +1,25 @@
-#include <iostream>
-#include <glm/gtc/type_ptr.hpp>
-
 #define GLFW_INCLUDE_NONE
-#include "GLFW/glfw3.h"
-
 #include "Renderer.h"
 
 Renderer::Renderer() {
-	glEnable(GL_DEPTH_TEST); // Enable the depth buffer to avoid OpenGL to overlap vertices in the drawing order
+	GLCall(glEnable(GL_DEPTH_TEST)); // Enable the depth buffer to avoid OpenGL to overlap vertices in the drawing order
 }
 
-void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const {
+void Renderer::Draw(Cube& cube) const {
 
-	shader.Bind();
-	va.Bind();
-	ib.Bind();
+	glm::mat4 modelMatrix = glm::mat4(1.0f);
 
-	glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr);
+	modelMatrix = glm::translate(modelMatrix, glm::vec3(cube.GetPosition().x, cube.GetPosition().y, -5.0f));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(cube.GetRotation()), glm::vec3(1.0f, 0.0f, 0.0f));
+
+	cube.GetVertexArray()->Bind();
+	cube.GetIndexBuffer()->Bind();
+
+	cube.GetShader()->SetUniformMat4fv("modelMatrix", modelMatrix);
+
+	cube.GetShader()->Bind();
+
+	glDrawElements(GL_TRIANGLES, cube.GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 
 void Renderer::Clear(float red, float green, float blue, float alpha) const {

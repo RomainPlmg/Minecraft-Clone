@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
+#include "OpenGL.h"
 #include "Shader.h"
 
 Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath): m_RendererID(0) {
@@ -11,7 +12,7 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath): 
 }
 
 Shader::~Shader() {
-    glDeleteProgram(m_RendererID);
+    GLCall(glDeleteProgram(m_RendererID));
 }
 
 std::string Shader::ParseFile(const std::string& filePath) {

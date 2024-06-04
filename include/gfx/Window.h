@@ -1,22 +1,69 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
+#include "OpenGL.h"
+#include "Renderer.h"
 #include "Utils.h"
 
 class Window {
 private:
-	GLFWwindow* m_Handle;
-	Vector2u m_Size;
+private:
+    /* The init function is a common code for all constructors */
+    void Init(const char* title, int width, int height);
 
-	static void _size_callback(GLFWwindow* window, int width, int height);
-	static void _error_calback(int code, const char* description);
+    /* Callback function for GLFW */
+    static void _size_callback(GLFWwindow* window, int width, int height);
+    static void _error_calback(int code, const char* description);
 
+    /* Attributes */
+    GLFWwindow* m_Handle;
+    Vector2u m_Size;
+    Renderer* m_Renderer;
+    glm::mat4 m_ProjMatrix;
+
+    float m_FOV;
 public:
-	Window(unsigned int width, unsigned int height, const std::string& title);
-	void GameLoop();
-	void Destroy();
+    /* Constructors */
+    Window();
+    Window(const char* title);
+    Window(const char* title, int width, int height);
 
-	inline GLFWwindow* GetHandler() { return m_Handle; }
-	inline void SetSize(Vector2u size) { m_Size = size; }
-	inline Vector2u GetSize() { return m_Size; }
+    /*
+     * @brief Clear the window with black color
+    */
+    void Clear();
+
+    /*
+     * @brief Clear the window with custom color
+    */
+    void Clear(std::uint8_t r, std::uint8_t g, std::uint8_t b);
+
+    /*
+     * @brief Clear the window with custom color
+    */
+    void Clear(Color color);
+
+    /*
+     * @brief Draw something to the screen
+    */
+    void Draw(Cube& cube);
+
+    /*
+     * @brief Poll events
+    */
+    void PollEvents();
+
+    /*
+     * @brief Display the window
+    */
+    void Display();
+
+    /*
+     * @brief Destroy the window
+    */
+    void Close();
+
+    /*
+     * @brief Check if the window is open
+    */
+    bool IsOpen() const;
 };

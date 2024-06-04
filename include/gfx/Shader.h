@@ -1,7 +1,6 @@
 #pragma once
 
-#include <glad/glad.h> // Include GLAD to get all the required OpenGL headers
-#include <glm/glm.hpp>
+#include "OpenGL.h"
 #include <string>
 
 struct ShaderProgramSource {

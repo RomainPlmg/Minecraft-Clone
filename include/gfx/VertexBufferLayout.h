@@ -1,8 +1,8 @@
 #pragma once
 
+#include "OpenGL.h"
 #include <vector>
 #include <iostream>
-#include <glad/glad.h>
 
 struct VertexBufferElement {
 	unsigned int type;
