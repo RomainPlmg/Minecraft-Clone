@@ -5,31 +5,32 @@
 
 class Transformable {
 protected:
-    Vector2f m_Position;
-    float m_Angle;
-    Vector2f m_Scale;
-    Vector2f m_Origin;
+    glm::vec3 m_Position;
+    glm::vec3 m_Angle;
+    glm::vec3 m_Scale;
+    glm::vec3 m_Origin;
 public:
     Transformable() = default;
     virtual ~Transformable() = default;
 
     /* Methods */
-    void Move(const Vector2f& offset);
-    void Rotate(const float angle);
-    void Scale(const Vector2f& factor);
+    void Move(const glm::vec3& offset);
+    void Rotate(const glm::vec3& angle);
+    void Scale(const glm::vec3& factor);
 
     /* Setters */
-    void SetPosition(const float positionX, const float positionY);
-    void SetPosition(const Vector2f& position);
-    void SetRotation(const float angle);
-    void SetScale(const float scaleX, const float scaleY);
-    void SetScale(const Vector2f& scale);
-    void SetOrigin(const float originX, const float originY);
-    void SetOrigin(const Vector2f& origin);
+    void SetPosition(const float positionX, const float positionY, const float positionZ);
+    void SetPosition(const glm::vec3& position);
+    void SetRotation(const float rotationX, const float rotationY, const float rotationZ);
+    void SetRotation(const glm::vec3 angle);
+    void SetScale(const float scaleX, const float scaleY, const float scaleZ);
+    void SetScale(const glm::vec3& scale);
+    void SetOrigin(const float originX, const float originY, const float originZ);
+    void SetOrigin(const glm::vec3& origin);
 
     /* Getters */
-    inline const Vector2f& GetPosition() const { return m_Position; }
-    inline float GetRotation() const { return m_Angle; }
-    inline const Vector2f& GetScale() const { return m_Scale; }
-    inline const Vector2f& GetOrigin() const { return m_Origin; }
+    inline const glm::vec3& GetPosition() const { return m_Position; }
+    inline const glm::vec3& GetRotation() const { return m_Angle; }
+    inline const glm::vec3& GetScale() const { return m_Scale; }
+    inline const glm::vec3& GetOrigin() const { return m_Origin; }
 };

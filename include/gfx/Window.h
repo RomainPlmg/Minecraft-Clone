@@ -16,7 +16,7 @@ private:
 
     /* Attributes */
     GLFWwindow* m_Handle;
-    Vector2u m_Size;
+    glm::vec2 m_Size;
     Renderer* m_Renderer;
     glm::mat4 m_ProjMatrix;
 

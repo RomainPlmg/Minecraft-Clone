@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utils.h"
+#include "OpenGL.h"
 
 class Texture {
 private:
@@ -15,5 +15,5 @@ public:
 	void Bind(unsigned int slot = 0) const;
 	void Unbind() const;
 
-	inline Vector2u GetSize() const { return Vector2u(m_Width, m_Height); }
+	inline glm::vec2 GetSize() const { return glm::vec2(m_Width, m_Height); }
 };

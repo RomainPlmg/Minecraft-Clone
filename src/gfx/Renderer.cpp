@@ -9,8 +9,12 @@ void Renderer::Draw(Cube& cube) const {
 
 	glm::mat4 modelMatrix = glm::mat4(1.0f);
 
-	modelMatrix = glm::translate(modelMatrix, glm::vec3(cube.GetPosition().x, cube.GetPosition().y, -5.0f));
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(cube.GetRotation()), glm::vec3(1.0f, 0.0f, 0.0f));
+	modelMatrix = glm::translate(modelMatrix, glm::vec3(cube.GetPosition().x, cube.GetPosition().y, cube.GetPosition().z));
+
+
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(cube.GetRotation().x), glm::vec3(1.0f, 0.0f, 0.0f));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(cube.GetRotation().y), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(cube.GetRotation().z), glm::vec3(0.0f, 0.0f, 1.0f));
 
 	cube.GetVertexArray()->Bind();
 	cube.GetIndexBuffer()->Bind();

@@ -53,6 +53,11 @@ Cube::Cube(const std::string& texturePath) {
             21, 23, 22
     };
 
+    m_Position = glm::vec3(0.0f);
+    m_Angle = glm::vec3(0.0f);
+    m_Scale = glm::vec3(0.0f);
+    m_Origin = glm::vec3(0.0f);
+
 	m_Vb = new VertexBuffer(vertexDatas, sizeof(vertexDatas));
 	m_Ib = new IndexBuffer(indices, sizeof(indices) / sizeof(unsigned int));
     m_Layout = new VertexBufferLayout;
