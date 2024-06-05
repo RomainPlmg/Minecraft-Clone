@@ -32,6 +32,7 @@ void Window::Init(const char* title, int width, int height) {
 
     GLInit();
 
+    glfwSetInputMode(m_Handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwGetCursorPos(m_Handle, &m_OldMousePosX, &m_OldMousePosY);
     
     /* Build the camera and the renderer after making OpenGL context */
@@ -100,7 +101,6 @@ void Window::ProcessInput() {
         m_Camera->ProcessKeyboard(DOWN);
     }
     
-    glfwSetInputMode(m_Handle, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     glfwGetCursorPos(m_Handle, &m_MousePosX, &m_MousePosY);
     m_Camera->ProcessMouseMovement(m_MousePosX - m_OldMousePosX, m_OldMousePosY - m_MousePosY);
     m_OldMousePosX = m_MousePosX;

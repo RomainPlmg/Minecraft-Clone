@@ -10,6 +10,8 @@ Game::Game(int width, int height) {
     Window window("Minecraft", width, height);
 
     Cube exampleCube("../assets/textures/block/stone_bricks.png");
+    Cube exampleCube1("../assets/textures/block/stone_bricks.png");
+    exampleCube1.Move(glm::vec3(2.0f, 0.0f, 0.0f));
 
     // Init the time
     Timer::init();
@@ -22,6 +24,7 @@ Game::Game(int width, int height) {
         window.ProcessInput();
 
         window.Draw(exampleCube);
+        window.Draw(exampleCube1);
 
         /* Swap front and back buffers */
         window.Display();
