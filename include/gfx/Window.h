@@ -7,7 +7,6 @@
 
 class Window {
 private:
-private:
     /* The init function is a common code for all constructors */
     void Init(const char* title, int width, int height);
 
@@ -21,10 +20,13 @@ private:
     Renderer* m_Renderer;
 
     glm::vec2 m_Size;
-    double m_MousePosX, m_MousePosY, m_OldMousePosX, m_OldMousePosY;
     glm::mat4 m_ProjMatrix;
 
+    std::string m_Title;
+    double m_MousePosX, m_MousePosY, m_OldMousePosX, m_OldMousePosY;
     float m_FOV;
+
+    double timeForTwoFPS;
 public:
     /* Constructors */
     Window();

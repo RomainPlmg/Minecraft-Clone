@@ -5,7 +5,7 @@
 
 class Game {
 public:
-	Game(int width = 640, int height = 360);
+    Game(int width = 640, int height = 360);
 };
 
 #endif // __GAME_H__

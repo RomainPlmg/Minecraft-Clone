@@ -11,7 +11,7 @@ Game::Game(int width, int height) {
 
     Cube exampleCube("../assets/textures/block/stone_bricks.png");
     Cube exampleCube1("../assets/textures/block/stone_bricks.png");
-    exampleCube1.Move(glm::vec3(2.0f, 0.0f, 0.0f));
+    exampleCube1.Move(glm::vec3(1.0f, 0.0f, 0.0f));
 
     // Init the time
     Timer::init();

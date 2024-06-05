@@ -1,11 +1,15 @@
 #include "OpenGL.h"
+#include "Utils.h"
 #include "Window.h"
+#include <iomanip>
+#include <sstream>
 
 void Window::Init(const char* title, int width, int height) {
     this->m_Size.x = width;
     this->m_Size.y = height;
-
+    this->m_Title = title;
     this->m_FOV = 45.0f;
+
     m_ProjMatrix = glm::perspective(glm::radians(m_FOV), (float)width / (float)height, 0.1f, 100.0f);
 
     if (!glfwInit()) {
@@ -16,7 +20,7 @@ void Window::Init(const char* title, int width, int height) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    m_Handle = glfwCreateWindow(m_Size.x, m_Size.y, title, nullptr, nullptr);
+    m_Handle = glfwCreateWindow(m_Size.x, m_Size.y, m_Title.c_str(), nullptr, nullptr);
     if (!m_Handle) {
         throw std::runtime_error("Failed to create window");
     }
@@ -38,12 +42,13 @@ void Window::Init(const char* title, int width, int height) {
     /* Build the camera and the renderer after making OpenGL context */
     m_Camera = new Camera();
     m_Renderer = new Renderer();
+    timeForTwoFPS = glfwGetTime();
 }
 
 
 /* Constructors */
 Window::Window(): m_Size(800, 600) {
-    Init("Avalanche", m_Size.x, m_Size.y);
+    Init("Game", m_Size.x, m_Size.y);
 }
 
 Window::Window(const char* title): m_Size(800, 600) {
@@ -108,6 +113,14 @@ void Window::ProcessInput() {
 }
 
 void Window::Display() {
+    if (Timer::frameTime - timeForTwoFPS >= 0.5f) {
+        std::stringstream windowTextStream;
+        windowTextStream << m_Title << " " << std::fixed << std::setprecision(1) << 1.0f/Timer::getDeltaTime() << "FPS";
+        std::string windowText = windowTextStream.str();
+        glfwSetWindowTitle(m_Handle, windowText.c_str());
+
+        timeForTwoFPS = Timer::frameTime;
+    }
     glfwSwapBuffers(m_Handle);
 }
 
