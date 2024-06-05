@@ -79,7 +79,7 @@ void Window::PollEvents() {
 
 void Window::ProcessInput() {
     if (glfwGetKey(m_Handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        Close();
+        glfwSetWindowShouldClose(m_Handle, true);
     }
     if (glfwGetKey(m_Handle, GLFW_KEY_W) == GLFW_PRESS) {
         m_Camera->ProcessKeyboard(FORWARD);
