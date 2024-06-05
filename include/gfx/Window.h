@@ -2,6 +2,7 @@
 
 #include "OpenGL.h"
 #include "Renderer.h"
+#include "Camera.h"
 #include "Utils.h"
 
 class Window {
@@ -16,8 +17,11 @@ private:
 
     /* Attributes */
     GLFWwindow* m_Handle;
-    glm::vec2 m_Size;
+    Camera* m_Camera;
     Renderer* m_Renderer;
+
+    glm::vec2 m_Size;
+    double m_MousePosX, m_MousePosY, m_OldMousePosX, m_OldMousePosY;
     glm::mat4 m_ProjMatrix;
 
     float m_FOV;
@@ -51,6 +55,11 @@ public:
      * @brief Poll events
     */
     void PollEvents();
+
+    /*
+     * @brief Process all inputs, like keyboard or mouse
+    */
+    void ProcessInput();
 
     /*
      * @brief Display the window

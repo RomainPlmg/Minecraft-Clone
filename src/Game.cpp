@@ -2,6 +2,7 @@
 #include <iostream>
 #include "OpenGL.h"
 #include "Game.h"
+#include "Camera.h"
 #include "Cube.h"
 #include "Window.h"
 
@@ -9,7 +10,6 @@ Game::Game(int width, int height) {
     Window window("Minecraft", width, height);
 
     Cube exampleCube("../assets/textures/block/stone_bricks.png");
-    exampleCube.Rotate(30.0f);
 
     // Init the time
     Timer::init();
@@ -18,6 +18,8 @@ Game::Game(int width, int height) {
         Timer::update();
         /* Render here */
         window.Clear(Color::Blue);
+
+        window.ProcessInput();
 
         window.Draw(exampleCube);
 

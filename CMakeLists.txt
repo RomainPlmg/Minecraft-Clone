@@ -22,6 +22,7 @@ set(EXEC_SOURCES
     src/gfx/VertexBufferLayout.cpp
     src/gfx/Window.cpp
 
+    src/Camera.cpp
     src/Cube.cpp
     src/Game.cpp
     src/Main.cpp

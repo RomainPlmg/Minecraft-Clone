@@ -31,8 +31,11 @@ void Window::Init(const char* title, int width, int height) {
     glfwSetErrorCallback(_error_calback);
 
     GLInit();
+
+    glfwGetCursorPos(m_Handle, &m_OldMousePosX, &m_OldMousePosY);
     
-    /* Build the renderer after making OpenGL context */
+    /* Build the camera and the renderer after making OpenGL context */
+    m_Camera = new Camera();
     m_Renderer = new Renderer();
 }
 
@@ -65,13 +68,43 @@ void Window::Clear(Color color) {
 }
 
 void Window::Draw(Cube& cube) {
-    cube.GetShader()->SetUniformMat4fv("viewMatrix", glm::mat4(1.0f));
+    cube.GetShader()->SetUniformMat4fv("viewMatrix", m_Camera->GetViewMatrix());
     cube.GetShader()->SetUniformMat4fv("projectionMatrix", m_ProjMatrix);
     m_Renderer->Draw(cube);
 }
 
 void Window::PollEvents() {
     glfwPollEvents();
+}
+
+void Window::ProcessInput() {
+    if (glfwGetKey(m_Handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        Close();
+    }
+    if (glfwGetKey(m_Handle, GLFW_KEY_W) == GLFW_PRESS) {
+        m_Camera->ProcessKeyboard(FORWARD);
+    }
+    if (glfwGetKey(m_Handle, GLFW_KEY_A) == GLFW_PRESS) {
+        m_Camera->ProcessKeyboard(LEFT);
+    }
+    if (glfwGetKey(m_Handle, GLFW_KEY_S) == GLFW_PRESS) {
+        m_Camera->ProcessKeyboard(BACKWARD);
+    }
+    if (glfwGetKey(m_Handle, GLFW_KEY_D) == GLFW_PRESS) {
+        m_Camera->ProcessKeyboard(RIGHT);
+    }
+    if (glfwGetKey(m_Handle, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        m_Camera->ProcessKeyboard(UP);
+    }
+    if (glfwGetKey(m_Handle, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        m_Camera->ProcessKeyboard(DOWN);
+    }
+    
+    glfwSetInputMode(m_Handle, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+    glfwGetCursorPos(m_Handle, &m_MousePosX, &m_MousePosY);
+    m_Camera->ProcessMouseMovement(m_MousePosX - m_OldMousePosX, m_OldMousePosY - m_MousePosY);
+    m_OldMousePosX = m_MousePosX;
+    m_OldMousePosY = m_MousePosY;
 }
 
 void Window::Display() {
