@@ -2,14 +2,18 @@
 
 #include <stdexcept>
 #include <string>
-#include <vector>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#if (defined(__GNUC__) || defined(__clang__)) && defined(_POSIX)
+#include <csignal>
+#define DEBUG_BREAK() raise(SIGTRAP)
+#elif defined(_MSC_VER)
+#define DEBUG_BREAK() __debugbreak()
+#else
+#define DEBUG_BREAK() assert(false)
+#endif
 
-#define ASSERT(x) if (!(x)) __debugbreak();
+#define ASSERT(x) if (!(x)) DEBUG_BREAK();
 #define GLCall(x) GLClearError();\
     x;\
     ASSERT(GLLogCall(#x, __FILE__, __LINE__))

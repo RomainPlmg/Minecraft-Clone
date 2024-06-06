@@ -1,6 +1,7 @@
 #pragma once
 
 #include "OpenGL.h"
+#include "Utils.h"
 
 enum CameraMovement {
     FORWARD,

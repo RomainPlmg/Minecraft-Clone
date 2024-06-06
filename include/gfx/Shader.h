@@ -1,7 +1,7 @@
 #pragma once
 
 #include "OpenGL.h"
-#include <string>
+#include "Utils.h"
 
 struct ShaderProgramSource {
     std::string vertexSource;
