@@ -1,7 +1,7 @@
 #include "Cube.h"
 
-Cube::Cube(const std::string& texturePath) {
-	    float vertexDatas[192] = {
+void Cube::Init(const std::string& texturePath) {
+float vertexDatas[192] = {
         // position				// color			// texture
         -0.5f, -0.5f,  0.5f,	0.0f, 0.0f, 0.0f,	0.0f, 0.0f, // Front face
          0.5f, -0.5f,  0.5f,	0.0f, 0.0f, 0.0f,	1.0f, 0.0f,
@@ -58,31 +58,24 @@ Cube::Cube(const std::string& texturePath) {
     m_Scale = glm::vec3(0.0f);
     m_Origin = glm::vec3(0.0f);
 
-	m_Vb = new VertexBuffer(vertexDatas, sizeof(vertexDatas));
-	m_Ib = new IndexBuffer(indices, sizeof(indices) / sizeof(unsigned int));
+    m_Vb = new VertexBuffer(vertexDatas, sizeof(vertexDatas));
+    m_Ib = new IndexBuffer(indices, sizeof(indices) / sizeof(unsigned int));
     m_Layout = new VertexBufferLayout;
     m_Va = new VertexArray;
     m_Texture = new Texture;
 
-	m_Layout->Push<float>(3); // Position
+    m_Layout->Push<float>(3); // Position
     m_Layout->Push<float>(3); // Color
     m_Layout->Push<float>(2); // Texture
     m_Va->AddBuffer(*m_Vb, *m_Layout);
 
-	m_Shader = new Shader("../assets/shaders/vertex.glsl", "../assets/shaders/fragment.glsl");
-	m_Texture->LoadFromFile(texturePath);
+    m_Texture->LoadFromFile(texturePath);
 }
 
-
-/* Getters */
-VertexArray* Cube::GetVertexArray() const {
-	return m_Va;
+Cube::Cube() {
+    Init("../assets/textures/block/Undefined.png");
 }
 
-IndexBuffer* Cube::GetIndexBuffer() const {
-	return m_Ib;
-}
-
-Shader* Cube::GetShader() const {
-	return m_Shader;
+Cube::Cube(const std::string& texturePath) {
+    Init(texturePath);
 }

@@ -5,6 +5,8 @@ Renderer::Renderer(GLenum mode) {
     GLCall(glEnable(GL_DEPTH_TEST)); // Enable the depth buffer to avoid OpenGL to overlap vertices in the drawing order
     GLCall(glPolygonMode(GL_FRONT_AND_BACK, mode));
     GLCall(glLineWidth(2.5f));
+
+    m_Shader = new Shader("../assets/shaders/vertex.glsl", "../assets/shaders/fragment.glsl");
 }
 
 void Renderer::Draw(Cube& cube) const {
@@ -17,14 +19,14 @@ void Renderer::Draw(Cube& cube) const {
     modelMatrix = glm::rotate(modelMatrix, glm::radians(cube.GetRotation().y), glm::vec3(0.0f, 1.0f, 0.0f));
     modelMatrix = glm::rotate(modelMatrix, glm::radians(cube.GetRotation().z), glm::vec3(0.0f, 0.0f, 1.0f));
 
-    cube.GetVertexArray()->Bind();
-    cube.GetIndexBuffer()->Bind();
+    cube.GetVertexArray().Bind();
+    cube.GetIndexBuffer().Bind();
 
-    cube.GetShader()->SetUniformMat4fv("modelMatrix", modelMatrix);
+    m_Shader->SetUniformMat4fv("modelMatrix", modelMatrix);
 
-    cube.GetShader()->Bind();
+    m_Shader->Bind();
 
-    glDrawElements(GL_TRIANGLES, cube.GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, cube.GetIndexBuffer().GetCount(), GL_UNSIGNED_INT, nullptr);
 }
 
 void Renderer::Clear(float red, float green, float blue, float alpha) const {

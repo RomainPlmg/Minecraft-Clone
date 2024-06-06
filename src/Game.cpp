@@ -9,9 +9,16 @@
 Game::Game(int width, int height) {
     Window window("Minecraft", width, height);
 
-    Cube exampleCube("../assets/textures/block/stone_bricks.png");
-    Cube exampleCube1("../assets/textures/block/stone_bricks.png");
-    exampleCube1.Move(glm::vec3(1.0f, 0.0f, 0.0f));
+    int chunkSize = 8*8;
+    Cube* cubes = new Cube[chunkSize];
+
+    for (int i = 0; i < 8; i++) {
+        for (int y = 0; y < 8; y++) {
+            int index = i * 8 + y;
+            cubes[index].SetTexture("../assets/textures/block/dirt.png");
+            cubes[index].Move(glm::vec3(i, 0, y));
+        }
+    }
 
     // Init the time
     Timer::init();
@@ -23,8 +30,12 @@ Game::Game(int width, int height) {
 
         window.ProcessInput();
 
-        window.Draw(exampleCube);
-        window.Draw(exampleCube1);
+        for (int i = 0; i < 8; i++) {
+            for (int y = 0; y < 8; y++) {
+                int index = i * 8 + y;
+                window.Draw(cubes[index]);
+            }
+        }
 
         /* Swap front and back buffers */
         window.Display();

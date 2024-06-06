@@ -9,20 +9,25 @@
 #include "Transformable.h"
 #include <string>
 
-class Cube: public Transformable {
+class Cube : public Transformable
+{
 private:
-    VertexArray* m_Va;
-    VertexBuffer* m_Vb;
-    VertexBufferLayout* m_Layout;
-    IndexBuffer* m_Ib;
-    Shader* m_Shader;
-    Texture* m_Texture;
-    
+    void Init(const std::string &texturePath);
+
+    VertexArray *m_Va;
+    VertexBuffer *m_Vb;
+    VertexBufferLayout *m_Layout;
+    IndexBuffer *m_Ib;
+    Texture *m_Texture;
+
 public:
-    Cube(const std::string& texturePath);
+    Cube();
+    Cube(const std::string &texturePath);
 
     /* Getters */
-    VertexArray* GetVertexArray() const;
-    IndexBuffer* GetIndexBuffer() const;
-    Shader* GetShader() const;
+    inline VertexArray &GetVertexArray() const { return *m_Va; }
+    inline IndexBuffer &GetIndexBuffer() const { return *m_Ib; }
+
+    /* Setters */
+    inline void SetTexture(const std::string &texturePath) { m_Texture->LoadFromFile(texturePath); }
 };

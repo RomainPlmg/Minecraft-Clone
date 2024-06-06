@@ -74,8 +74,8 @@ void Window::Clear(Color color) {
 }
 
 void Window::Draw(Cube& cube) {
-    cube.GetShader()->SetUniformMat4fv("viewMatrix", m_Camera->GetViewMatrix());
-    cube.GetShader()->SetUniformMat4fv("projectionMatrix", m_ProjMatrix);
+    m_Renderer->GetShader().SetUniformMat4fv("viewMatrix", m_Camera->GetViewMatrix());
+    m_Renderer->GetShader().SetUniformMat4fv("projectionMatrix", m_ProjMatrix);
     m_Renderer->Draw(cube);
 }
 
