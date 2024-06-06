@@ -42,7 +42,8 @@ void Window::Init(const char* title, int width, int height) {
     /* Build the camera and the renderer after making OpenGL context */
     m_Camera = new Camera();
     m_Renderer = new Renderer();
-    timeForTwoFPS = glfwGetTime();
+    m_timeForTwoFPS = glfwGetTime();
+    m_keyPressed = false;
 }
 
 
@@ -87,6 +88,22 @@ void Window::ProcessInput() {
     if (glfwGetKey(m_Handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(m_Handle, true);
     }
+    if (glfwGetKey(m_Handle, GLFW_KEY_F5) == GLFW_PRESS && !m_keyPressed) {
+        GLint mode[2];
+        GLCall(glGetIntegerv(GL_POLYGON_MODE, mode));
+        if (*mode == GL_FILL) {
+            GLCall(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
+        } else if (*mode == GL_LINE) {
+            GLCall(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
+        }
+
+        m_keyPressed = true;
+    }
+
+    if (glfwGetKey(m_Handle, GLFW_KEY_F5) == GLFW_RELEASE) {
+        m_keyPressed = false;
+    }
+
     if (glfwGetKey(m_Handle, GLFW_KEY_W) == GLFW_PRESS) {
         m_Camera->ProcessKeyboard(FORWARD);
     }
@@ -113,13 +130,13 @@ void Window::ProcessInput() {
 }
 
 void Window::Display() {
-    if (Timer::frameTime - timeForTwoFPS >= 0.5f) {
+    if (Timer::frameTime - m_timeForTwoFPS >= 0.5f) {
         std::stringstream windowTextStream;
         windowTextStream << m_Title << " " << std::fixed << std::setprecision(1) << 1.0f/Timer::getDeltaTime() << "FPS";
         std::string windowText = windowTextStream.str();
         glfwSetWindowTitle(m_Handle, windowText.c_str());
 
-        timeForTwoFPS = Timer::frameTime;
+        m_timeForTwoFPS = Timer::frameTime;
     }
     glfwSwapBuffers(m_Handle);
 }

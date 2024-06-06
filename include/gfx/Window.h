@@ -26,7 +26,8 @@ private:
     double m_MousePosX, m_MousePosY, m_OldMousePosX, m_OldMousePosY;
     float m_FOV;
 
-    double timeForTwoFPS;
+    double m_timeForTwoFPS;
+    bool m_keyPressed;
 public:
     /* Constructors */
     Window();

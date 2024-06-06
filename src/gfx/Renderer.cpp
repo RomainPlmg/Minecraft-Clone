@@ -1,10 +1,8 @@
 #define GLFW_INCLUDE_NONE
 #include "Renderer.h"
 
-Renderer::Renderer(GLenum mode) {
+Renderer::Renderer() {
     GLCall(glEnable(GL_DEPTH_TEST)); // Enable the depth buffer to avoid OpenGL to overlap vertices in the drawing order
-    GLCall(glPolygonMode(GL_FRONT_AND_BACK, mode));
-    GLCall(glLineWidth(2.5f));
 
     m_Shader = new Shader("../assets/shaders/vertex.glsl", "../assets/shaders/fragment.glsl");
 }
