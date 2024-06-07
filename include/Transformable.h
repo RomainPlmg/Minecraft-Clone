@@ -9,8 +9,10 @@ protected:
     glm::vec3 m_Angle;
     glm::vec3 m_Scale;
     glm::vec3 m_Origin;
+
+    glm::mat4 m_ModelMatrix;
 public:
-    Transformable() = default;
+    Transformable();
     virtual ~Transformable() = default;
 
     /* Methods */
@@ -29,6 +31,7 @@ public:
     void SetOrigin(const glm::vec3& origin);
 
     /* Getters */
+    inline const glm::mat4& GetModelMatrix() const { return m_ModelMatrix; }
     inline const glm::vec3& GetPosition() const { return m_Position; }
     inline const glm::vec3& GetRotation() const { return m_Angle; }
     inline const glm::vec3& GetScale() const { return m_Scale; }
