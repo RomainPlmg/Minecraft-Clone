@@ -28,4 +28,10 @@ public:
     void SetUniformFloat(const std::string& name, float value) const;
     void SetUniformVec2fv(const std::string& name, glm::vec2 value) const;
     void SetUniformMat4fv(const std::string& name, glm::mat4 value) const;
+
+    /* Default shaders */
+    static const Shader& GetCubeShader() {
+        static Shader shader("../assets/shaders/vertex.glsl", "../assets/shaders/fragment.glsl");
+        return shader;
+    }
 };

@@ -6,6 +6,7 @@
 #include "Shader.h"
 
 Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath): m_RendererID(0) {
+    this->m_FilePath = "V: " + vertexPath + " / F:" + fragmentPath;
     std::string vertexSource = ParseFile(vertexPath);
     std::string fragmentSource = ParseFile(fragmentPath);
     m_RendererID = CreateShader(vertexSource, fragmentSource);
