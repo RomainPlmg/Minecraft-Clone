@@ -12,6 +12,7 @@ set(EXEC_SOURCES
     src/glad/glad.c
 
     src/utils/Timer.cpp
+    src/utils/Transformable.cpp
 
     src/gfx/IndexBuffer.cpp
     src/gfx/Renderer.cpp
@@ -21,12 +22,12 @@ set(EXEC_SOURCES
     src/gfx/VertexBuffer.cpp
     src/gfx/VertexBufferLayout.cpp
     src/gfx/Window.cpp
+    src/gfx/Camera.cpp
 
-    src/Camera.cpp
     src/Cube.cpp
     src/Game.cpp
     src/Main.cpp
-    src/Transformable.cpp
+    
 )
 
 # Add the GLFW library
