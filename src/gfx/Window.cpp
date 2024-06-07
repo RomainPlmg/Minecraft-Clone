@@ -100,7 +100,7 @@ void Window::ProcessInput() {
     if (glfwGetKey(m_Handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(m_Handle, true);
     }
-    if (glfwGetKey(m_Handle, GLFW_KEY_F5) == GLFW_PRESS && !m_keyPressed) {
+    if (glfwGetKey(m_Handle, GLFW_KEY_F3) == GLFW_PRESS && !m_keyPressed) {
         GLint mode[2];
         GLCall(glGetIntegerv(GL_POLYGON_MODE, mode));
         if (*mode == GL_FILL) {
