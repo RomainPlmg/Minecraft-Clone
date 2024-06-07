@@ -53,23 +53,18 @@ float vertexDatas[192] = {
             21, 23, 22
     };
 
-    m_Position = glm::vec3(0.0f);
-    m_Angle = glm::vec3(0.0f);
-    m_Scale = glm::vec3(0.0f);
-    m_Origin = glm::vec3(0.0f);
+    this->m_Vb = new VertexBuffer(vertexDatas, sizeof(vertexDatas));
+    this->m_Ib = new IndexBuffer(indices, sizeof(indices) / sizeof(unsigned int));
+    this->m_Layout = new VertexBufferLayout;
+    this->m_Va = new VertexArray;
 
-    m_Vb = new VertexBuffer(vertexDatas, sizeof(vertexDatas));
-    m_Ib = new IndexBuffer(indices, sizeof(indices) / sizeof(unsigned int));
-    m_Layout = new VertexBufferLayout;
-    m_Va = new VertexArray;
-    m_Texture = new Texture;
+    this->m_Layout->Push<float>(3); // Position
+    this->m_Layout->Push<float>(3); // Color
+    this->m_Layout->Push<float>(2); // Texture
+    this->m_Va->AddBuffer(*m_Vb, *m_Layout);
 
-    m_Layout->Push<float>(3); // Position
-    m_Layout->Push<float>(3); // Color
-    m_Layout->Push<float>(2); // Texture
-    m_Va->AddBuffer(*m_Vb, *m_Layout);
-
-    m_Texture->LoadFromFile(texturePath);
+    this->m_Texture = new Texture;
+    this->m_Texture->LoadFromFile(texturePath);
 }
 
 Cube::Cube() {
