@@ -9,14 +9,14 @@
 Game::Game(int width, int height) {
     Window window("Minecraft", width, height);
 
-    int chunkSize = 8*8;
-    Cube* cubes = new Cube[chunkSize];
+    int chunkSize = 16;
+    Cube* cubes = new Cube[chunkSize*chunkSize];
 
-    for (int i = 0; i < 8; i++) {
-        for (int y = 0; y < 8; y++) {
-            int index = i * 8 + y;
+    for (int i = 0; i < chunkSize; i++) {
+        for (int y = 0; y < chunkSize; y++) {
+            int index = i * chunkSize + y;
             cubes[index].SetTexture("../assets/textures/block/dirt.png");
-            cubes[index].Move(glm::vec3(i, 0, y));
+            cubes[index].SetPosition(glm::vec3(i, 0, y));
         }
     }
 
@@ -30,9 +30,9 @@ Game::Game(int width, int height) {
 
         window.ProcessInput();
 
-        for (int i = 0; i < 8; i++) {
-            for (int y = 0; y < 8; y++) {
-                int index = i * 8 + y;
+        for (int i = 0; i < chunkSize; i++) {
+            for (int y = 0; y < chunkSize; y++) {
+                int index = i * chunkSize + y;
                 window.Draw(cubes[index]);
             }
         }
