@@ -44,4 +44,9 @@ public:
 
     /* Getters */
     inline glm::mat4 GetViewMatrix() { return glm::lookAt(m_Position, m_Position + m_Front, m_Up); }
+
+    /* Setters */
+    inline void SetPosition(glm::vec3 position) { m_Position = position; }
+    inline void SetYaw(float angle) { m_Yaw = angle; }
+    inline void SetPitch(float angle) { m_Pitch = angle; }
 };
