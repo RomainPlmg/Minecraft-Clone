@@ -28,6 +28,9 @@ void Window::Init(const char* title, int width, int height) {
     /* Make the OpenGL context */
     glfwMakeContextCurrent(m_Handle);
 
+    /* Disable VSync */
+    glfwSwapInterval(0);
+
     glfwSetWindowUserPointer(m_Handle, this);
 
     /* Configure callbacks */
@@ -75,9 +78,10 @@ void Window::Clear(Color color) {
 }
 
 void Window::Draw(Cube& cube) {
-    m_Renderer->GetShader().SetUniformMat4fv("viewMatrix", m_Camera->GetViewMatrix());
-    m_Renderer->GetShader().SetUniformMat4fv("projectionMatrix", m_ProjMatrix);
-    m_Renderer->Draw(cube);
+    Shader::GetCubeShader().SetUniformMat4fv("modelMatrix", cube.GetModelMatrix());
+    Shader::GetCubeShader().SetUniformMat4fv("viewMatrix", m_Camera->GetViewMatrix());
+    Shader::GetCubeShader().SetUniformMat4fv("projectionMatrix", m_ProjMatrix);
+    m_Renderer->Draw(cube.GetVertexArray(), cube.GetIndexBuffer(), Shader::GetCubeShader());
 }
 
 void Window::PollEvents() {
