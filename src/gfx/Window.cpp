@@ -44,9 +44,16 @@ void Window::Init(const char* title, int width, int height) {
     
     /* Build the camera and the renderer after making OpenGL context */
     m_Camera = new Camera();
+    m_Camera->SetPosition(glm::vec3(0.0f, 5.0f, 2.0f));
+    m_Camera->SetPitch(-30.0f);
+    m_Camera->SetYaw(50.0f);
+
     m_Renderer = new Renderer();
+    m_Monitor = glfwGetPrimaryMonitor();
+    m_VideoMode = glfwGetVideoMode(m_Monitor);
     m_timeForTwoFPS = glfwGetTime();
     m_keyPressed = false;
+    m_IsFullscreen = false;
 }
 
 
@@ -89,6 +96,7 @@ void Window::PollEvents() {
 }
 
 void Window::ProcessInput() {
+    /* Debug controls */
     if (glfwGetKey(m_Handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(m_Handle, true);
     }
@@ -100,14 +108,29 @@ void Window::ProcessInput() {
         } else if (*mode == GL_LINE) {
             GLCall(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
         }
-
         m_keyPressed = true;
     }
-
-    if (glfwGetKey(m_Handle, GLFW_KEY_F5) == GLFW_RELEASE) {
+    if(glfwGetKey(m_Handle, GLFW_KEY_F11) == GLFW_PRESS && !m_keyPressed) {
+        if (m_IsFullscreen) {
+            glfwSetWindowMonitor(m_Handle, nullptr, m_PosWindowedX, m_PosWindowedY, m_SizeWindowedX, m_SizeWindowedY, 0);
+            m_IsFullscreen = false;
+        } else {
+            // Save position and scale of the window
+            glfwGetWindowPos(m_Handle, &m_PosWindowedX, &m_PosWindowedY);
+            glfwGetWindowSize(m_Handle, &m_SizeWindowedX, &m_SizeWindowedY);
+            // Switch to full screen
+            glfwSetWindowMonitor(m_Handle, m_Monitor, 0, 0, m_VideoMode->width, m_VideoMode->height, m_VideoMode->refreshRate);
+            m_IsFullscreen = true;
+        }
+        m_keyPressed = true;
+    }
+        if (glfwGetKey(m_Handle, GLFW_KEY_F3) == GLFW_RELEASE && 
+            glfwGetKey(m_Handle, GLFW_KEY_F11) == GLFW_RELEASE) {
         m_keyPressed = false;
     }
 
+
+    /* Movement controls */
     if (glfwGetKey(m_Handle, GLFW_KEY_W) == GLFW_PRESS) {
         m_Camera->ProcessKeyboard(FORWARD);
     }

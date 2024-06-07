@@ -15,11 +15,15 @@ private:
     static void _error_calback(int code, const char* description);
 
     /* Attributes */
+    GLFWmonitor* m_Monitor;
+    const GLFWvidmode* m_VideoMode;
     GLFWwindow* m_Handle;
     Camera* m_Camera;
     Renderer* m_Renderer;
 
     glm::vec2 m_Size;
+    int m_SizeWindowedX, m_SizeWindowedY;
+    int m_PosWindowedX, m_PosWindowedY;
     glm::mat4 m_ProjMatrix;
 
     std::string m_Title;
@@ -28,6 +32,7 @@ private:
 
     double m_timeForTwoFPS;
     bool m_keyPressed;
+    bool m_IsFullscreen;
 public:
     /* Constructors */
     Window();
