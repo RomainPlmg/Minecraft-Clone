@@ -71,6 +71,12 @@ Window::Window(const char* title, int width, int height): m_Size(width, height) 
 }
 
 
+/* Destructor */
+Window::~Window() {
+    delete m_VideoMode;
+}
+
+
 /* Methods */
 void Window::Clear() {
     m_Renderer->Clear(0.0f, 0.0f, 0.0f);

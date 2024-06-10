@@ -39,6 +39,8 @@ public:
     Window(const char* title);
     Window(const char* title, int width, int height);
 
+    ~Window();
+
     /*
      * @brief Clear the window with black color
     */
