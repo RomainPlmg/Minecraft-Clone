@@ -5,12 +5,19 @@
 #include "VertexBufferLayout.h"
 #include "IndexBuffer.h"
 #include "Texture.h"
-#include "Shader.h"
 #include "Transformable.h"
 #include <string>
 
-class Cube : public Transformable
-{
+enum CubeFace {
+    FACE_FRONT,
+    FACE_RIGHT,
+    FACE_BACK,
+    FACE_LEFT,
+    FACE_TOP,
+    FACE_BOTTOM
+};
+
+class Cube : public Transformable {
 private:
     void Init(const std::string &texturePath);
 
@@ -19,10 +26,16 @@ private:
     VertexBufferLayout *m_Layout;
     IndexBuffer *m_Ib;
     Texture *m_Texture;
+    GLfloat *m_VertexDatas;
+    GLuint *m_Indices;
 
 public:
+    /* Constructor */
     Cube();
     Cube(const std::string &texturePath);
+
+    /* Destructor */
+    ~Cube();
 
     /* Getters */
     inline VertexArray &GetVertexArray() const { return *m_Va; }

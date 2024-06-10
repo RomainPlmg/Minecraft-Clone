@@ -1,39 +1,40 @@
 #include "Cube.h"
 
 void Cube::Init(const std::string& texturePath) {
-float vertexDatas[192] = {
-        // position				// color			// texture
-        -0.5f, -0.5f,  0.5f,	0.0f, 0.0f, 0.0f,	0.0f, 0.0f, // Front face
-         0.5f, -0.5f,  0.5f,	0.0f, 0.0f, 0.0f,	1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,	0.0f, 0.0f, 0.0f,	1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,	0.0f, 0.0f, 0.0f,	0.0f, 1.0f,
+    m_VertexDatas = new GLfloat[] {
+        // position             // color            // texture
+        -0.5f, -0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    0.0f, 0.0f, // Front face
+         0.5f, -0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    0.0f, 1.0f,
 
-         0.5f, -0.5f,  0.5f,	0.0f, 0.0f, 0.0f,	0.0f, 0.0f, // Right face
-         0.5f, -0.5f, -0.5f,	0.0f, 0.0f, 0.0f,	1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,	0.0f, 0.0f, 0.0f,	1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,	0.0f, 0.0f, 0.0f,	0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    0.0f, 0.0f, // Right face
+         0.5f, -0.5f, -0.5f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,    0.0f, 0.0f, 0.0f,    1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    0.0f, 1.0f,
 
-         0.5f, -0.5f, -0.5f,	0.0f, 0.0f, 0.0f,	0.0f, 0.0f, // Back face
-        -0.5f, -0.5f, -0.5f,	0.0f, 0.0f, 0.0f,	1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,	0.0f, 0.0f, 0.0f,	1.0f, 1.0f,
-         0.5f,	0.5f, -0.5f,	0.0f, 0.0f, 0.0f,	0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,    0.0f, 0.0f, 0.0f,    0.0f, 0.0f, // Back face
+        -0.5f, -0.5f, -0.5f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,    0.0f, 0.0f, 0.0f,    1.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,    0.0f, 0.0f, 0.0f,    0.0f, 1.0f,
 
-        -0.5f, -0.5f, -0.5f,	0.0f, 0.0f, 0.0f,	0.0f, 0.0f, // Left face
-        -0.5f, -0.5f,  0.5f,	0.0f, 0.0f, 0.0f,	1.0f, 0.0f,
-        -0.5f,	0.5f,  0.5f,	0.0f, 0.0f, 0.0f,	1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,	0.0f, 0.0f, 0.0f,	0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,    0.0f, 0.0f, 0.0f,    0.0f, 0.0f, // Left face
+        -0.5f, -0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,    0.0f, 0.0f, 0.0f,    0.0f, 1.0f,
 
-        -0.5f,  0.5f,  0.5f,	0.0f, 0.0f, 0.0f,	0.0f, 0.0f, // Top face
-         0.5f,  0.5f,  0.5f,	0.0f, 0.0f, 0.0f,	1.0f, 0.0f,
-         0.5f,	0.5f, -0.5f,	0.0f, 0.0f, 0.0f,	1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,	0.0f, 0.0f, 0.0f,	0.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    0.0f, 0.0f, // Top face
+         0.5f,  0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,    0.0f, 0.0f, 0.0f,    1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,    0.0f, 0.0f, 0.0f,    0.0f, 1.0f,
 
-        -0.5f, -0.5f,  0.5f,	0.0f, 0.0f, 0.0f,	0.0f, 0.0f, // Bottom face
-         0.5f, -0.5f,  0.5f,	0.0f, 0.0f, 0.0f,	1.0f, 0.0f,
-         0.5f, -0.5f, -0.5f,	0.0f, 0.0f, 0.0f,	1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,	0.0f, 0.0f, 0.0f,	0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    0.0f, 0.0f, // Bottom face
+         0.5f, -0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+         0.5f, -0.5f, -0.5f,    0.0f, 0.0f, 0.0f,    1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,    0.0f, 0.0f, 0.0f,    0.0f, 1.0f,
     };
-    unsigned int indices[36] = {
+
+    m_Indices = new GLuint[] {
             0, 1, 3, // Front face
             1, 2, 3,
 
@@ -53,8 +54,8 @@ float vertexDatas[192] = {
             21, 23, 22
     };
 
-    this->m_Vb = new VertexBuffer(vertexDatas, sizeof(vertexDatas));
-    this->m_Ib = new IndexBuffer(indices, sizeof(indices) / sizeof(unsigned int));
+    this->m_Vb = new VertexBuffer(m_VertexDatas, sizeof(m_VertexDatas));
+    this->m_Ib = new IndexBuffer(m_Indices, sizeof(m_Indices) / sizeof(unsigned int));
     this->m_Layout = new VertexBufferLayout;
     this->m_Va = new VertexArray;
 
@@ -67,10 +68,17 @@ float vertexDatas[192] = {
     this->m_Texture->LoadFromFile(texturePath);
 }
 
+/* Constructor */
 Cube::Cube() {
     Init("../assets/textures/block/Undefined.png");
 }
 
 Cube::Cube(const std::string& texturePath) {
     Init(texturePath);
+}
+
+/* Destructor */
+Cube::~Cube() {
+    delete[] m_VertexDatas;
+    delete[] m_Indices;
 }
