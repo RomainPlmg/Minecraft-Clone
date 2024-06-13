@@ -7,6 +7,8 @@
 #include "Texture.h"
 #include "Transformable.h"
 #include <string>
+#include <array>
+#include <vector>
 
 enum CubeFace {
     FACE_FRONT,
@@ -26,8 +28,9 @@ private:
     VertexBufferLayout *m_Layout;
     IndexBuffer *m_Ib;
     Texture *m_Texture;
-    GLfloat *m_VertexDatas;
-    GLuint *m_Indices;
+
+    std::array<GLfloat, 192> m_VertexDatas;
+    std::vector<GLuint> m_Indices;
 
 public:
     /* Constructor */
@@ -38,8 +41,8 @@ public:
     ~Cube();
 
     /* Getters */
-    inline VertexArray &GetVertexArray() const { return *m_Va; }
-    inline IndexBuffer &GetIndexBuffer() const { return *m_Ib; }
+    inline VertexArray &GetVertexArray() const { return *this->m_Va; }
+    inline IndexBuffer &GetIndexBuffer() const { return *this->m_Ib; }
 
     /* Setters */
     inline void SetTexture(const std::string &texturePath) { m_Texture->LoadFromFile(texturePath); }
