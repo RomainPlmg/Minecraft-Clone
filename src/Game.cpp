@@ -1,26 +1,31 @@
 #define STB_IMAGE_IMPLEMENTATION
-#include <iostream>
-#include "OpenGL.h"
+
 #include "Game.h"
 #include "Camera.h"
-#include "Cube.h"
+#include "CubeMesh.h"
 #include "Window.h"
 
-#define CUBE_SIZE 5
+#define CUBE_SIZE 2
 
 Game::Game(int width, int height) {
     Window window("Minecraft", width, height);
-    Cube* cubes = new Cube[(int)pow(CUBE_SIZE, 3)];
+    CubeMesh mesh;
 
     for (int x = 0; x < CUBE_SIZE; x++) {
         for (int y = 0; y < CUBE_SIZE; y++) {
             for (int z = 0; z < CUBE_SIZE; z++) {
-                int index = x * (CUBE_SIZE * CUBE_SIZE) + y * CUBE_SIZE + z;
-                cubes[index].SetTexture("../assets/textures/block/dirt.png");
-                cubes[index].SetPosition(glm::vec3(x, y, z));
+                Cube cube("../assets/textures/block/dirt.png");
+                cube.SetPosition(glm::vec3(x, y, z));
+                mesh.AddCube(cube);
             }
         }
     }
+
+    Cube exampleCube("../assets/textures/block/stone.png");
+    // exampleCube.SetTexture("../assets/textures/block/stone_bricks.png");
+    exampleCube.SetPosition(5, 0, 0);
+
+    mesh.CullingInvisibleFaces();
 
     // Init the time
     Timer::init();
@@ -32,14 +37,11 @@ Game::Game(int width, int height) {
 
         window.ProcessInput();
 
-        for (int x = 0; x < CUBE_SIZE; x++) {
-            for (int y = 0; y < CUBE_SIZE; y++) {
-                for (int z = 0; z < CUBE_SIZE; z++) {
-                    int index = x * (CUBE_SIZE * CUBE_SIZE) + y * CUBE_SIZE + z;
-                    window.Draw(cubes[index]);
-                }
-            }
+        for (auto cube: mesh.GetCubes()) {
+            window.Draw(cube);
         }
+
+        window.Draw(exampleCube);
 
         /* Swap front and back buffers */
         window.Display();
@@ -47,8 +49,6 @@ Game::Game(int width, int height) {
         /* Poll for and process events */
         window.PollEvents();
     }
-
-    delete[] cubes;
 
     window.Close();
 }
