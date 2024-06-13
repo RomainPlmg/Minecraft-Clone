@@ -3,8 +3,7 @@
 A Minecraft clone made with OpenGL and C++. For now it is under development.
 
 <div align="center">
-  <img src="screenshots/Chunk_fill.png" alt="Chunk_fill" width="450"/>
-<img src="screenshots/Chunk_line.png" alt="Chunk_line" width="450"/>
+  <img src="screenshots/Chunk_fill.png" alt="Chunk_fill" width="1000"/>
 </div>
 
 ### Controls:
