@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <stdexcept>
 #include <string>
 #include <glad/glad.h>
@@ -30,7 +31,7 @@ static void GLClearError() {
 
 static bool GLLogCall(const char* function, const char* file, int line) {
     while (GLenum error = glGetError()) {
-        std::string errorMsg = "[OpenGL Error] (" + std::to_string(error) + function + " " + file + ": " + std::to_string(line) + "\n";
+        std::string errorMsg = "[OpenGL Error] (" + std::to_string(error) + " " + function + " " + file + ": " + std::to_string(line) + "\n";
         throw std::runtime_error(errorMsg.c_str());
         return false;
     }
