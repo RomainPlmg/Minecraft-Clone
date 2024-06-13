@@ -43,12 +43,10 @@ void Window::Init(const char* title, int width, int height) {
     glfwGetCursorPos(m_Handle, &m_OldMousePosX, &m_OldMousePosY);
 
     m_CubeShader = new Shader("../assets/shaders/vertex.glsl", "../assets/shaders/fragment.glsl");
+    m_CubeShader->Bind();
     
     /* Build the camera and the renderer after making OpenGL context */
     m_Camera = new Camera();
-    m_Camera->SetPosition(glm::vec3(0.0f, 5.0f, 2.0f));
-    m_Camera->SetPitch(-30.0f);
-    m_Camera->SetYaw(50.0f);
 
     m_Renderer = new Renderer();
     m_Monitor = glfwGetPrimaryMonitor();
@@ -94,7 +92,10 @@ void Window::Clear(Color color) {
 }
 
 void Window::Draw(Cube& cube) {
-    m_CubeShader->Bind();
+    cube.GetTexture().Bind();
+    cube.GetVertexArray().Bind();
+    cube.GetIndexBuffer().Bind();
+
     m_CubeShader->SetUniformMat4fv("modelMatrix", cube.GetModelMatrix());
     m_CubeShader->SetUniformMat4fv("viewMatrix", m_Camera->GetViewMatrix());
     m_CubeShader->SetUniformMat4fv("projectionMatrix", m_ProjMatrix);
