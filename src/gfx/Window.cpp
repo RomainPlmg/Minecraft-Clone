@@ -41,6 +41,8 @@ void Window::Init(const char* title, int width, int height) {
 
     glfwSetInputMode(m_Handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwGetCursorPos(m_Handle, &m_OldMousePosX, &m_OldMousePosY);
+
+    m_CubeShader = new Shader("../assets/shaders/vertex.glsl", "../assets/shaders/fragment.glsl");
     
     /* Build the camera and the renderer after making OpenGL context */
     m_Camera = new Camera();
@@ -73,7 +75,8 @@ Window::Window(const char* title, int width, int height): m_Size(width, height) 
 
 /* Destructor */
 Window::~Window() {
-    delete m_VideoMode;
+    delete m_Renderer;
+    delete m_Camera;
 }
 
 
@@ -91,10 +94,11 @@ void Window::Clear(Color color) {
 }
 
 void Window::Draw(Cube& cube) {
-    Shader::GetCubeShader().SetUniformMat4fv("modelMatrix", cube.GetModelMatrix());
-    Shader::GetCubeShader().SetUniformMat4fv("viewMatrix", m_Camera->GetViewMatrix());
-    Shader::GetCubeShader().SetUniformMat4fv("projectionMatrix", m_ProjMatrix);
-    m_Renderer->Draw(cube.GetVertexArray(), cube.GetIndexBuffer(), Shader::GetCubeShader());
+    m_CubeShader->Bind();
+    m_CubeShader->SetUniformMat4fv("modelMatrix", cube.GetModelMatrix());
+    m_CubeShader->SetUniformMat4fv("viewMatrix", m_Camera->GetViewMatrix());
+    m_CubeShader->SetUniformMat4fv("projectionMatrix", m_ProjMatrix);
+    m_Renderer->Draw(cube.GetVertexArray(), cube.GetIndexBuffer(), *m_CubeShader);
 }
 
 void Window::PollEvents() {
@@ -175,7 +179,10 @@ void Window::Display() {
 }
 
 void Window::Close() {
-    glfwDestroyWindow(m_Handle);
+    if (m_Handle) {
+        glfwDestroyWindow(m_Handle);
+        m_Handle = nullptr;
+    }
     glfwTerminate();
 }
 
