@@ -28,21 +28,21 @@ std::string Shader::ParseFile(const std::string& filePath) {
 }
 
 unsigned int Shader::CompileShader(unsigned int type, const std::string& source) {
-    unsigned int id = glCreateShader(type);
+    GLCall(unsigned int id = glCreateShader(type));
     const char* src = source.c_str();
-    glShaderSource(id, 1, &src, nullptr);
-    glCompileShader(id);
+    GLCall(glShaderSource(id, 1, &src, nullptr));
+    GLCall(glCompileShader(id));
 
     // Print compile errors if any
     int result;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+    GLCall(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
     if (!result) {
         int length;
-        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+        GLCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
         char* message = new char[length];
-        glGetShaderInfoLog(id, length, NULL, message);
+        GLCall(glGetShaderInfoLog(id, length, NULL, message));
         std::cout << "ERROR::SHADER::" << (type == GL_VERTEX_SHADER ? "VERTEX" : "FRAGMENT") << "::COMPILATION_FAILED\n" << message << std::endl;
-        glDeleteShader(id);
+        GLCall(glDeleteShader(id));
         return 0;
     }
 
@@ -50,65 +50,65 @@ unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
 }
 
 unsigned int Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader) {
-    unsigned int program = glCreateProgram();
+    GLCall(unsigned int program = glCreateProgram());
     unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
     unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
-    glValidateProgram(program);
+    GLCall(glAttachShader(program, vs));
+    GLCall(glAttachShader(program, fs));
+    GLCall(glLinkProgram(program));
+    GLCall(glValidateProgram(program));
 
-    glDeleteShader(vs);
-    glDeleteShader(fs);
+    GLCall(glDeleteShader(vs));
+    GLCall(glDeleteShader(fs));
 
     return program;
 }
 
 void Shader::Bind() const {
-    glUseProgram(m_RendererID);
+    GLCall(glUseProgram(m_RendererID));
 }
 
 void Shader::Unbind() const {
-    glUseProgram(0);
+    GLCall(glUseProgram(0));
 }
 
 void Shader::SetUniformBool(const std::string& name, bool value) const {
-    GLint uniformLoc = glGetUniformLocation(m_RendererID, name.c_str());
+    GLCall(GLint uniformLoc = glGetUniformLocation(m_RendererID, name.c_str()));
     if (uniformLoc == -1) {
         std::cerr << "Error: Unable to find the uniform \'" << name << "\'" << std::endl;
     }
-    glUniform1i(uniformLoc, (int)value);
+    GLCall(glUniform1i(uniformLoc, (int)value));
 }
 
 void Shader::SetUniformInt(const std::string& name, int value) const {
-    GLint uniformLoc = glGetUniformLocation(m_RendererID, name.c_str());
+    GLCall(GLint uniformLoc = glGetUniformLocation(m_RendererID, name.c_str()));
     if (uniformLoc == -1) {
         std::cerr << "Error: Unable to find the uniform \'" << name << "\'" << std::endl;
     }
-    glUniform1i(uniformLoc, value);
+    GLCall(glUniform1i(uniformLoc, value));
 }
 
 void Shader::SetUniformFloat(const std::string& name, float value) const {
-    GLint uniformLoc = glGetUniformLocation(m_RendererID, name.c_str());
+    GLCall(GLint uniformLoc = glGetUniformLocation(m_RendererID, name.c_str()));
     if (uniformLoc == -1) {
         std::cerr << "Error: Unable to find the uniform \'" << name << "\'" << std::endl;
     }
-    glUniform1f(uniformLoc, value);
+    GLCall(glUniform1f(uniformLoc, value));
 }
 
 void Shader::SetUniformVec2fv(const std::string& name, glm::vec2 value) const {
-    GLint uniformLoc = glGetUniformLocation(m_RendererID, name.c_str());
+    GLCall(GLint uniformLoc = glGetUniformLocation(m_RendererID, name.c_str()));
     if (uniformLoc == -1) {
         std::cerr << "Error: Unable to find the uniform \'" << name << "\'" << std::endl;
     }
-    glUniform2fv(uniformLoc, 1, glm::value_ptr(value));
+    GLCall(glUniform2fv(uniformLoc, 1, glm::value_ptr(value)));
 }
 
 void Shader::SetUniformMat4fv(const std::string& name, glm::mat4 value) const {
-    GLint uniformLoc = glGetUniformLocation(m_RendererID, name.c_str());
+    GLCall(GLint uniformLoc = glGetUniformLocation(m_RendererID, name.c_str()));
     if (uniformLoc == -1) {
         std::cerr << "Error: Unable to find the uniform \'" << name << "\'" << std::endl;
     }
-    glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(value));
+    GLCall(glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(value)));
 }
