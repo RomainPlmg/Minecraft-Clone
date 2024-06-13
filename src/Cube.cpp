@@ -79,11 +79,42 @@ Cube::Cube(const std::string& texturePath) {
     Init(texturePath);
 }
 
-/* Destructor */
-Cube::~Cube() {
-    delete m_Texture;
-    delete m_Ib;
-    delete m_Layout;
-    delete m_Vb;
-    delete m_Va;
+/* Methods */
+void Cube::RemoveFace(CubeFace face) {
+    if (m_Indices.empty()) return;
+    auto it = m_Indices.begin();
+
+    bool breakLoop = false;
+
+    for (it; it < m_Indices.end(); it += 6) {
+        switch (*it) {
+            case 0:
+                if (face == FACE_FRONT) breakLoop = true;
+                break;
+            case 4:
+                if (face == FACE_RIGHT) breakLoop = true;
+                break;
+            case 8:
+                if (face == FACE_BACK) breakLoop = true;
+                break;
+            case 12:
+                if (face == FACE_LEFT) breakLoop = true;
+                break;
+            case 16:
+                if (face == FACE_TOP) breakLoop = true;
+                break;
+            case 20:
+                if (face == FACE_BOTTOM) breakLoop = true;
+                break;
+        }
+
+        if (breakLoop) break;
+    }
+
+    /* Erase a face */
+    for (int i = 0; i < 6; i++) {
+        m_Indices.erase(it);
+    }
+
+    m_Ib->Update(m_Indices.data(), m_Indices.size());
 }

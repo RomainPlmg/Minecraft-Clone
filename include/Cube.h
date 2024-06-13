@@ -37,12 +37,15 @@ public:
     Cube();
     Cube(const std::string &texturePath);
 
-    /* Destructor */
-    ~Cube();
+    /* Methods */
+    void RemoveFace(CubeFace face);
+    void AddFace(CubeFace face);
+    void ResetFaces();
 
     /* Getters */
-    inline VertexArray &GetVertexArray() const { return *this->m_Va; }
-    inline IndexBuffer &GetIndexBuffer() const { return *this->m_Ib; }
+    inline VertexArray &GetVertexArray() const { return *m_Va; }
+    inline IndexBuffer &GetIndexBuffer() const { return *m_Ib; }
+    inline Texture &GetTexture() const { return *m_Texture; }
 
     /* Setters */
     inline void SetTexture(const std::string &texturePath) { m_Texture->LoadFromFile(texturePath); }
