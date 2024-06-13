@@ -20,15 +20,18 @@ private:
     GLFWwindow* m_Handle;
     Camera* m_Camera;
     Renderer* m_Renderer;
+    Shader* m_CubeShader;
 
     glm::vec2 m_Size;
     int m_SizeWindowedX, m_SizeWindowedY;
     int m_PosWindowedX, m_PosWindowedY;
+
     glm::mat4 m_ProjMatrix;
+    float m_FOV;
 
     std::string m_Title;
     double m_MousePosX, m_MousePosY, m_OldMousePosX, m_OldMousePosY;
-    float m_FOV;
+    
 
     double m_timeForTwoFPS;
     bool m_keyPressed;
