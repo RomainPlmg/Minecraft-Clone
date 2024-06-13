@@ -6,7 +6,6 @@
 class Texture {
 private:
     unsigned int m_RendererID;
-    unsigned char* m_LocalBuffer;
     int m_Width, m_Height, m_BPP;
 public:
     Texture();
