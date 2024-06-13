@@ -8,6 +8,8 @@ public:
     IndexBuffer(const unsigned int* data, unsigned int count);
     ~IndexBuffer();
 
+    /* Methods */
+    void Update(const unsigned int* data, unsigned int count);
     void Bind() const;
     void Unbind() const;
 
