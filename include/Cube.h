@@ -1,11 +1,8 @@
 #pragma once
 
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "VertexBufferLayout.h"
-#include "IndexBuffer.h"
 #include "Texture.h"
 #include "Transformable.h"
+#include "Drawable.h"
 #include <string>
 #include <array>
 #include <vector>
@@ -19,18 +16,12 @@ enum CubeFace {
     FACE_BOTTOM
 };
 
-class Cube : public Transformable {
+class Cube : public Transformable, public Drawable {
 private:
     void Init(const std::string &texturePath);
 
-    VertexArray *m_Va;
-    VertexBuffer *m_Vb;
-    VertexBufferLayout *m_Layout;
-    IndexBuffer *m_Ib;
-    Texture *m_Texture;
-
-    std::array<GLfloat, 192> m_VertexDatas;
-    std::vector<GLuint> m_Indices;
+    /* Attributes */
+    std::array<GLfloat, 192> m_VertexDatas{};
 
 public:
     /* Constructor */
@@ -43,10 +34,5 @@ public:
     void ResetFaces();
 
     /* Getters */
-    inline VertexArray &GetVertexArray() const { return *m_Va; }
-    inline IndexBuffer &GetIndexBuffer() const { return *m_Ib; }
-    inline Texture &GetTexture() const { return *m_Texture; }
-
-    /* Setters */
-    inline void SetTexture(const std::string &texturePath) { m_Texture->LoadFromFile(texturePath); }
+    inline virtual int GetType() const override { return CUBE; }
 };

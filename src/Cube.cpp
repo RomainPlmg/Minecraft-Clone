@@ -2,7 +2,7 @@
 
 void Cube::Init(const std::string& texturePath) {
     
-    this->m_VertexDatas = {
+    m_VertexDatas = {
         // position             // color            // texture
         -0.5f, -0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    0.0f, 0.0f, // Front face
          0.5f, -0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f,
@@ -36,38 +36,39 @@ void Cube::Init(const std::string& texturePath) {
     };
 
 
-    this->m_Indices = {
-            0, 1, 3, // Front face
-            1, 2, 3,
+    m_Indices = {
+        0, 1, 3, // Front face
+        1, 2, 3,
 
-            4, 5, 7, // Right face
-            5, 6, 7,
+        4, 5, 7, // Right face
+        5, 6, 7,
 
-            8, 9, 11, // Back face
-            9, 10, 11,
+        8, 9, 11, // Back face
+        9, 10, 11,
 
-            12, 13, 15, // Left face
-            13, 14, 15,
+        12, 13, 15, // Left face
+        13, 14, 15,
 
-            16, 17, 19, // Top face
-            17, 18, 19,
+        16, 17, 19, // Top face
+        17, 18, 19,
 
-            20, 23, 21, // Bottom face
-            21, 23, 22
+        20, 23, 21, // Bottom face
+        21, 23, 22
     };
 
-    this->m_Vb = new VertexBuffer(m_VertexDatas.data(), m_VertexDatas.size() * sizeof(GLfloat));
-    this->m_Ib = new IndexBuffer(m_Indices.data(), m_Indices.size());
-    this->m_Layout = new VertexBufferLayout;
-    this->m_Va = new VertexArray;
+    m_Type = CUBE;
+    m_Vb = new VertexBuffer(m_VertexDatas.data(), m_VertexDatas.size() * sizeof(GLfloat));
+    m_Ib = new IndexBuffer(m_Indices.data(), m_Indices.size());
+    m_Layout = new VertexBufferLayout;
+    m_Va = new VertexArray;
 
-    this->m_Layout->Push<GLfloat>(3); // Position
-    this->m_Layout->Push<GLfloat>(3); // Color
-    this->m_Layout->Push<GLfloat>(2); // Texture
-    this->m_Va->AddBuffer(*this->m_Vb, *this->m_Layout);
+    m_Layout->Push<GLfloat>(3); // Position
+    m_Layout->Push<GLfloat>(3); // Color
+    m_Layout->Push<GLfloat>(2); // Texture
+    m_Va->AddBuffer(*m_Vb, *m_Layout);
 
-    this->m_Texture = new Texture;
-    this->m_Texture->LoadFromFile(texturePath);
+    m_Texture = new Texture;
+    m_Texture->LoadFromFile(texturePath);
 }
 
 /* Constructor */
@@ -117,4 +118,26 @@ void Cube::RemoveFace(CubeFace face) {
     }
 
     m_Ib->Update(m_Indices.data(), m_Indices.size());
+}
+
+void Cube::ResetFaces() {
+    m_Indices = {
+        0, 1, 3, // Front face
+        1, 2, 3,
+
+        4, 5, 7, // Right face
+        5, 6, 7,
+
+        8, 9, 11, // Back face
+        9, 10, 11,
+
+        12, 13, 15, // Left face
+        13, 14, 15,
+
+        16, 17, 19, // Top face
+        17, 18, 19,
+
+        20, 23, 21, // Bottom face
+        21, 23, 22
+    };
 }

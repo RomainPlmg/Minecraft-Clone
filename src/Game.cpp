@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Camera.h"
 #include "CubeMesh.h"
+#include "Sprite.h"
 #include "Window.h"
 
 #define CUBE_SIZE 2
@@ -21,9 +22,8 @@ Game::Game(int width, int height) {
         }
     }
 
-    Cube exampleCube("../assets/textures/block/stone.png");
-    // exampleCube.SetTexture("../assets/textures/block/stone_bricks.png");
-    exampleCube.SetPosition(5, 0, 0);
+    Sprite crosshair("../assets/textures/ui/screen_cross.png");
+    crosshair.Scale(glm::vec3(0.06f, 0.04f, 0.0f));
 
     mesh.CullingInvisibleFaces();
 
@@ -41,7 +41,7 @@ Game::Game(int width, int height) {
             window.Draw(cube);
         }
 
-        window.Draw(exampleCube);
+        window.Draw(crosshair);
 
         /* Swap front and back buffers */
         window.Display();

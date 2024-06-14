@@ -42,8 +42,8 @@ void Window::Init(const char* title, int width, int height) {
     glfwSetInputMode(m_Handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwGetCursorPos(m_Handle, &m_OldMousePosX, &m_OldMousePosY);
 
-    m_CubeShader = new Shader("../assets/shaders/vertex.glsl", "../assets/shaders/fragment.glsl");
-    m_CubeShader->Bind();
+    m_Shader = new Shader("../assets/shaders/vertex.glsl", "../assets/shaders/fragment.glsl");
+    m_Shader->Bind();
     
     /* Build the camera and the renderer after making OpenGL context */
     m_Camera = new Camera();
@@ -91,15 +91,31 @@ void Window::Clear(Color color) {
     m_Renderer->Clear(color.r, color.g, color.b);
 }
 
-void Window::Draw(Cube& cube) {
-    cube.GetTexture().Bind();
-    cube.GetVertexArray().Bind();
-    cube.GetIndexBuffer().Bind();
+void Window::Draw(Drawable &entity) {
+    entity.Bind();
 
-    m_CubeShader->SetUniformMat4fv("modelMatrix", cube.GetModelMatrix());
-    m_CubeShader->SetUniformMat4fv("viewMatrix", m_Camera->GetViewMatrix());
-    m_CubeShader->SetUniformMat4fv("projectionMatrix", m_ProjMatrix);
-    m_Renderer->Draw(cube.GetVertexArray(), cube.GetIndexBuffer(), *m_CubeShader);
+    switch (entity.GetType()) {
+        case CUBE: {
+            auto cube = dynamic_cast<Cube *>(&entity);
+            m_Shader->SetUniformMat4fv("modelMatrix", cube->GetModelMatrix());
+            m_Shader->SetUniformMat4fv("viewMatrix", m_Camera->GetViewMatrix());
+            m_Shader->SetUniformMat4fv("projectionMatrix", m_ProjMatrix);
+            break;
+        }
+        case SPRITE: {
+            auto sprite = dynamic_cast<Sprite *>(&entity);
+            m_Shader->SetUniformMat4fv("modelMatrix", sprite->GetModelMatrix());
+            m_Shader->SetUniformMat4fv("viewMatrix", glm::mat4(1.0f));
+            m_Shader->SetUniformMat4fv("projectionMatrix", glm::mat4(1.0f));
+            break;
+        }
+        default:
+            break;
+    }
+
+    m_Renderer->Draw(entity.GetVertexArray(), entity.GetIndexBuffer(), *m_Shader);
+
+
 }
 
 void Window::PollEvents() {

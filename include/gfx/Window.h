@@ -20,7 +20,7 @@ private:
     GLFWwindow* m_Handle;
     Camera* m_Camera;
     Renderer* m_Renderer;
-    Shader* m_CubeShader;
+    Shader* m_Shader;
 
     glm::vec2 m_Size;
     int m_SizeWindowedX, m_SizeWindowedY;
@@ -60,9 +60,9 @@ public:
     void Clear(Color color);
 
     /*
-     * @brief Draw something to the screen
+     * @brief Draw something on the screen
     */
-    void Draw(Cube& cube);
+    void Draw(Drawable &entity);
 
     /*
      * @brief Poll events

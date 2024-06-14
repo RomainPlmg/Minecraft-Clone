@@ -4,6 +4,9 @@
 Renderer::Renderer() {
     GLCall(glEnable(GL_DEPTH_TEST)); // Enable the depth buffer to avoid OpenGL to overlap vertices in the drawing order
     GLCall(glEnable(GL_CULL_FACE));
+
+    GLCall(glEnable(GL_BLEND));
+    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 }
 
 void Renderer::Draw(VertexArray& va, IndexBuffer& ib, const Shader& shader) const {
