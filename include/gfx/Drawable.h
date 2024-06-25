@@ -4,37 +4,27 @@
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
 #include "IndexBuffer.h"
-#include "Texture.h"
+#include "Renderer.h"
 #include <vector>
-
-enum DrawableType {
-    CUBE,
-    SPRITE
-};
 
 class Drawable {
 protected:
-    DrawableType m_Type;
-    VertexArray *m_Va;
     VertexBuffer *m_Vb;
-    VertexBufferLayout *m_Layout;
     IndexBuffer *m_Ib;
-    Texture *m_Texture;
+    VertexBufferLayout *m_Layout;
+    VertexArray *m_Va;
 
-    std::vector<GLuint> m_Indices;
 public:
+    /* Constructor */
+    Drawable();
+
     /* Virtual destructor */
-    virtual ~Drawable() = default;
+    virtual ~Drawable();
 
     /* Methods */
-    void Bind() const;
-
-    /* Setters */
-    inline void SetTexture(const std::string &texturePath) { m_Texture->LoadFromFile(texturePath); }
+    virtual void Draw(const Renderer &renderer) = 0;
 
     /* Getters */
-    virtual int GetType() const = 0;
-    inline VertexArray &GetVertexArray() { return *m_Va; }
-    inline IndexBuffer &GetIndexBuffer() { return *m_Ib; }
-    inline Texture &GetTexture() const { return *m_Texture; }
+    inline const VertexArray &GetVertexArray() const { return *m_Va; }
+    inline const IndexBuffer &GetIndexBuffer() const { return *m_Ib; }
 };

@@ -1,26 +1,30 @@
 #include "OpenGL.h"
 #include "IndexBuffer.h"
 
-IndexBuffer::IndexBuffer() {
+IndexBuffer::IndexBuffer(const unsigned int* data, unsigned int count): m_Count(count), m_RendererID(0) {
     GLCall(glGenBuffers(1, &m_RendererID));
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID));
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW));
+    Bind();
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(GLuint), data, GL_DYNAMIC_DRAW));
 }
 
-IndexBuffer::IndexBuffer(const unsigned int* data, unsigned int count): m_Count(count) {
+IndexBuffer::IndexBuffer() : m_Count(0), m_RendererID(0) {
     GLCall(glGenBuffers(1, &m_RendererID));
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID));
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_DYNAMIC_DRAW));
+    Bind();
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW));
 }
 
 IndexBuffer::~IndexBuffer() {
     GLCall(glDeleteBuffers(1, &m_RendererID));
 }
 
-/* Methods */
-void IndexBuffer::Update(const unsigned int* data, unsigned int count) {
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID));
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_DYNAMIC_DRAW))
+void IndexBuffer::Update(const unsigned int *data, unsigned int count) {
+    m_Count = count;
+    Unbind();
+    GLCall(glDeleteBuffers(1, &m_RendererID));
+    GLCall(glGenBuffers(1, &m_RendererID));
+    Bind();
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW));
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(GLuint), data, GL_DYNAMIC_DRAW));
 }
 
 void IndexBuffer::Bind() const {

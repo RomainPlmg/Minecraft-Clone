@@ -5,12 +5,9 @@
 #include <sstream>
 
 void Window::Init(const char* title, int width, int height) {
-    this->m_Size.x = width;
-    this->m_Size.y = height;
-    this->m_Title = title;
-    this->m_FOV = 45.0f;
-
-    m_ProjMatrix = glm::perspective(glm::radians(m_FOV), (float)width / (float)height, 0.1f, 100.0f);
+    m_Size.x = width;
+    m_Size.y = height;
+    m_Title = title;
 
     if (!glfwInit()) {
         throw std::runtime_error("Failed to init GLFW");
@@ -35,20 +32,16 @@ void Window::Init(const char* title, int width, int height) {
 
     /* Configure callbacks */
     glfwSetFramebufferSizeCallback(m_Handle, _size_callback);
-    glfwSetErrorCallback(_error_calback);
+    glfwSetErrorCallback(_error_callback);
 
     GLInit();
 
     glfwSetInputMode(m_Handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwGetCursorPos(m_Handle, &m_OldMousePosX, &m_OldMousePosY);
 
-    m_Shader = new Shader("../assets/shaders/vertex.glsl", "../assets/shaders/fragment.glsl");
-    m_Shader->Bind();
-    
-    /* Build the camera and the renderer after making OpenGL context */
-    m_Camera = new Camera();
+    /* Create the renderer */
+    m_Renderer = new Renderer(m_Size.x, m_Size.y);
 
-    m_Renderer = new Renderer();
     m_Monitor = glfwGetPrimaryMonitor();
     m_VideoMode = glfwGetVideoMode(m_Monitor);
     m_timeForTwoFPS = glfwGetTime();
@@ -74,7 +67,6 @@ Window::Window(const char* title, int width, int height): m_Size(width, height) 
 /* Destructor */
 Window::~Window() {
     delete m_Renderer;
-    delete m_Camera;
 }
 
 
@@ -89,33 +81,6 @@ void Window::Clear(std::uint8_t r, std::uint8_t g, std::uint8_t b) {
 
 void Window::Clear(Color color) {
     m_Renderer->Clear(color.r, color.g, color.b);
-}
-
-void Window::Draw(Drawable &entity) {
-    entity.Bind();
-
-    switch (entity.GetType()) {
-        case CUBE: {
-            auto cube = dynamic_cast<Cube *>(&entity);
-            m_Shader->SetUniformMat4fv("modelMatrix", cube->GetModelMatrix());
-            m_Shader->SetUniformMat4fv("viewMatrix", m_Camera->GetViewMatrix());
-            m_Shader->SetUniformMat4fv("projectionMatrix", m_ProjMatrix);
-            break;
-        }
-        case SPRITE: {
-            auto sprite = dynamic_cast<Sprite *>(&entity);
-            m_Shader->SetUniformMat4fv("modelMatrix", sprite->GetModelMatrix());
-            m_Shader->SetUniformMat4fv("viewMatrix", glm::mat4(1.0f));
-            m_Shader->SetUniformMat4fv("projectionMatrix", glm::mat4(1.0f));
-            break;
-        }
-        default:
-            break;
-    }
-
-    m_Renderer->Draw(entity.GetVertexArray(), entity.GetIndexBuffer(), *m_Shader);
-
-
 }
 
 void Window::PollEvents() {
@@ -159,26 +124,26 @@ void Window::ProcessInput() {
 
     /* Movement controls */
     if (glfwGetKey(m_Handle, GLFW_KEY_W) == GLFW_PRESS) {
-        m_Camera->ProcessKeyboard(FORWARD);
+        m_Renderer->GetCamera().ProcessKeyboard(NORTH);
     }
     if (glfwGetKey(m_Handle, GLFW_KEY_A) == GLFW_PRESS) {
-        m_Camera->ProcessKeyboard(LEFT);
+        m_Renderer->GetCamera().ProcessKeyboard(WEST);
     }
     if (glfwGetKey(m_Handle, GLFW_KEY_S) == GLFW_PRESS) {
-        m_Camera->ProcessKeyboard(BACKWARD);
+        m_Renderer->GetCamera().ProcessKeyboard(SOUTH);
     }
     if (glfwGetKey(m_Handle, GLFW_KEY_D) == GLFW_PRESS) {
-        m_Camera->ProcessKeyboard(RIGHT);
+        m_Renderer->GetCamera().ProcessKeyboard(EAST);
     }
     if (glfwGetKey(m_Handle, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        m_Camera->ProcessKeyboard(UP);
+        m_Renderer->GetCamera().ProcessKeyboard(UP);
     }
     if (glfwGetKey(m_Handle, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-        m_Camera->ProcessKeyboard(DOWN);
+        m_Renderer->GetCamera().ProcessKeyboard(DOWN);
     }
     
     glfwGetCursorPos(m_Handle, &m_MousePosX, &m_MousePosY);
-    m_Camera->ProcessMouseMovement(m_MousePosX - m_OldMousePosX, m_OldMousePosY - m_MousePosY);
+    m_Renderer->GetCamera().ProcessMouseMovement(m_MousePosX - m_OldMousePosX, m_OldMousePosY - m_MousePosY);
     m_OldMousePosX = m_MousePosX;
     m_OldMousePosY = m_MousePosY;
 }
@@ -214,10 +179,10 @@ void Window::_size_callback(GLFWwindow* window, int width, int height) {
     Window* win = (Window*)glfwGetWindowUserPointer(window);
     win->m_Size.x = width;
     win->m_Size.y = height;
-    win->m_ProjMatrix = glm::perspective(glm::radians(win->m_FOV), (float)width / (float)height, 0.1f, 100.0f);
+    win->m_Renderer->GetProjMatrix() = glm::perspective(glm::radians(win->m_Renderer->GetFOV()), (float)width / (float)height, 0.1f, 100.0f);
 }
 
-void Window::_error_calback(int code, const char* description) {
+void Window::_error_callback(int code, const char* description) {
     std::string errorMsg = "Error " + std::to_string(code) + ": " + description + "\n";
     throw std::runtime_error(errorMsg.c_str());
 }

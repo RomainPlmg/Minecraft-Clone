@@ -48,21 +48,21 @@ m_Zoom(ZOOM)
 
 
 /* Methods */
-void Camera::ProcessKeyboard(CameraMovement direction) {
+void Camera::ProcessKeyboard(Direction direction) {
     float velocity = m_MovementSpeed * Timer::getDeltaTime();
 
     switch (direction) {
-    case FORWARD:
+    case NORTH:
         m_Position += m_Front * velocity;
         break;
-    case BACKWARD:
+    case SOUTH:
         m_Position -= m_Front * velocity;
         break;
-    case LEFT:
-        m_Position -= m_Right * velocity;
-        break;
-    case RIGHT:
+    case EAST:
         m_Position += m_Right * velocity;
+        break;
+    case WEST:
+        m_Position -= m_Right * velocity;
         break;
     case UP:
         m_Position += m_Up * velocity;

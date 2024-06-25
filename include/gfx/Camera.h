@@ -3,15 +3,6 @@
 #include "OpenGL.h"
 #include "Utils.h"
 
-enum CameraMovement {
-    FORWARD,
-    BACKWARD,
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN
-};
-
 // Default camera values
 const float YAW         = -90.0f;   // The rotation around the Y axis
 const float PITCH       = 0.0f;     // The rotation around the X axis
@@ -39,7 +30,7 @@ public:
     Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
 
     /* Methods */
-    void ProcessKeyboard(CameraMovement direction);
+    void ProcessKeyboard(Direction direction);
     void ProcessMouseMovement(double offsetX, double offsetY, bool constrainPitch = true);
 
     /* Getters */

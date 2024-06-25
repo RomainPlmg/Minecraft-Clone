@@ -1,38 +1,38 @@
 #include "Sprite.h"
 
-void Sprite::Init(const std::string &texturePath) {
-    m_VertexDatas = {
-        // position             // color            // texture
-        -0.5f, -0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    0.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,    0.0f, 0.0f, 0.0f,    0.0f, 1.0f
-    };
 
-    m_Indices = {
-        0, 1, 3,
-        1, 2, 3
-    };
+void Sprite::Init(const Texture& texture) {
+    m_Texture = &texture;
 
-    m_Type = SPRITE;
-    m_Vb = new VertexBuffer(m_VertexDatas.data(), m_VertexDatas.size() * sizeof(GLfloat));
-    m_Ib = new IndexBuffer(m_Indices.data(), m_Indices.size());
-    m_Layout = new VertexBufferLayout;
-    m_Va = new VertexArray;
-
+    m_Va->Bind();
+    m_Vb->Update(SPRITE_VERTICES, 36 * sizeof(GLfloat));
+    m_Ib->Update(SPRITE_INDICES, 6);
     m_Layout->Push<GLfloat>(3); // Position
-    m_Layout->Push<GLfloat>(3); // Color
     m_Layout->Push<GLfloat>(2); // Texture
+
     m_Va->AddBuffer(*m_Vb, *m_Layout);
-
-    m_Texture = new Texture;
-    m_Texture->LoadFromFile(texturePath);
 }
 
-Sprite::Sprite() {
-    Init("../assets/textures/block/Undefined.png");
+Sprite::Sprite() : m_Texture(nullptr) {
+    // Init(
 }
 
-Sprite::Sprite(const std::string &texturePath) {
-    Init(texturePath);
+Sprite::Sprite(const Texture& texture) : m_Texture(&texture) {
+    Init(texture);
+}
+
+Sprite::~Sprite() {
+    // delete m_Texture;
+}
+
+void Sprite::Draw(const Renderer &renderer) {
+    m_Va->Bind();
+    m_Ib->Bind();
+    const Shader shader = renderer.GetShader(SHADER_BASIC_TEXTURE);
+    shader.Bind();
+    shader.SetUniformMat4fv("modelMatrix", m_ModelMatrix);
+    shader.SetUniformMat4fv("viewMatrix", glm::mat4(1.0f));
+    shader.SetUniformMat4fv("projMatrix", glm::mat4(1.0f));
+    m_Texture->Bind();
+    GLCall(glDrawElements(GL_TRIANGLES, m_Ib->GetCount(), GL_UNSIGNED_INT, nullptr));
 }

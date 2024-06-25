@@ -4,7 +4,7 @@
 
 int main(void) {
     try {
-        Game minecraft(1280, 720);
+        Game minecraft;
     }
     catch (const std::runtime_error& error) {
         std::cerr << "An exception was throw: " << error.what() << "\n";

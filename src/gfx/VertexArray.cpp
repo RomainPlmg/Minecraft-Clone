@@ -1,14 +1,15 @@
 #include "VertexArray.h"
 
-VertexArray::VertexArray() {
-    glGenVertexArrays(1, &m_RendererID);
+VertexArray::VertexArray() : m_RendererID(0) {
+    GLCall(glGenVertexArrays(1, &m_RendererID));
+    Bind();
 }
 
 VertexArray::~VertexArray() {
-    glDeleteVertexArrays(1, &m_RendererID);
+    GLCall(glDeleteVertexArrays(1, &m_RendererID));
 }
 
-void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout) {
+void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout) const {
     Bind();
     vb.Bind();
     const auto& elements = layout.GetElements();
@@ -20,6 +21,14 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
         offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
     }
 }
+
+void VertexArray::Reset() {
+    Unbind();
+    GLCall(glDeleteVertexArrays(1, &m_RendererID));
+    GLCall(glGenVertexArrays(1, &m_RendererID));
+    Bind();
+}
+
 
 void VertexArray::Bind() const {
     GLCall(glBindVertexArray(m_RendererID));

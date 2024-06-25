@@ -4,7 +4,7 @@
 #include <stb/stb_image.h>
 #include <iostream>
 
-Texture::Texture(): m_RendererID(0), m_Width(0), m_Height(0), m_BPP(0) {
+Texture::Texture(const std::string& path): m_RendererID(0), m_Width(0), m_Height(0), m_BPP(0), m_Path(path) {
     stbi_set_flip_vertically_on_load(true);
 
     GLCall(glGenTextures(1, &m_RendererID));
@@ -14,6 +14,13 @@ Texture::Texture(): m_RendererID(0), m_Width(0), m_Height(0), m_BPP(0) {
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+
+    if (m_Path != "NULL") {
+        LoadFromFile(path);
+    } else
+    {
+        LoadFromFile("../assets/textures/block/undefined.png");
+    }
 }
 
 Texture::~Texture() {
@@ -21,6 +28,8 @@ Texture::~Texture() {
 }
 
 int Texture::LoadFromFile(const std::string& path) {
+    Bind();
+    m_Path = path;
     unsigned char* localBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BPP, 4);
 
     if (localBuffer) {
@@ -41,5 +50,5 @@ void Texture::Bind(unsigned int slot) const {
 }
 
 void Texture::Unbind() const {
-
+    GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 }

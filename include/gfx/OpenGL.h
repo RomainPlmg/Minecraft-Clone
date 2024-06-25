@@ -3,6 +3,7 @@
 #include <cassert>
 #include <stdexcept>
 #include <string>
+#include <format>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #if (defined(__GNUC__) || defined(__clang__)) && defined(_POSIX)
@@ -31,7 +32,7 @@ static void GLClearError() {
 
 static bool GLLogCall(const char* function, const char* file, int line) {
     while (GLenum error = glGetError()) {
-        std::string errorMsg = "[OpenGL Error] (" + std::to_string(error) + " " + function + " " + file + ": " + std::to_string(line) + "\n";
+        std::string errorMsg = "[OpenGL Error] (0x" + std::format("{:x}", error) + " " + function + " " + file + ": " + std::to_string(line) + "\n";
         throw std::runtime_error(errorMsg.c_str());
         return false;
     }
