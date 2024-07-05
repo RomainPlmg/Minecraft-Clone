@@ -1,10 +1,10 @@
 #include "Chunk.h"
 
 Chunk::Chunk(glm::vec2 position) : m_Position(glm::vec2(position.x * 16, position.y * 16)) {
-    m_Layout->Push<GLfloat>(3); // Position
-    m_Layout->Push<GLfloat>(2); // Texture
+    //m_Layout->Push<GLfloat>(3); // Position
+    //m_Layout->Push<GLfloat>(2); // Texture
     m_Texture = new Texture();
-    m_Texture->LoadFromFile("../assets/textures/block/stone.png");
+    m_Texture->LoadFromFile("./assets/textures/block/stone.png");
     m_Blocks = new Block[NB_BLOCKS_CHUNK](STONE);
 
     for (int x = 0; x < CHUNK_X; x++) {
@@ -34,32 +34,28 @@ void Chunk::Update() {
             }
         }
     }
-    m_Va->Reset();
-    m_Vb->Update(m_Vertices.data(), m_Vertices.size() * sizeof(GLfloat));
-    m_Ib->Update(m_Indices.data(), m_Indices.size());
-    m_Va->AddBuffer(*m_Vb, *m_Layout);
 }
 
-void Chunk::Draw(const Renderer &renderer) {
-    m_Va->Bind();
-    m_Ib->Bind();
-    m_Texture->Bind();
+//void Chunk::Draw(const Renderer &renderer) {
+//    m_Va->Bind();
+//    m_Ib->Bind();
+//    m_Texture->Bind();
+//
+//    Shader shader = renderer.GetShader(SHADER_BASIC_TEXTURE);
+//    shader.Bind();
+//    shader.SetUniformMat4fv("modelMatrix", glm::mat4(1.0f));
+//    shader.SetUniformMat4fv("viewMatrix", renderer.GetCamera().GetViewMatrix());
+//    shader.SetUniformMat4fv("projMatrix", renderer.GetProjMatrix());
+//
+//    GLCall(glDrawElements(GL_TRIANGLES, m_Ib->GetCount(), GL_UNSIGNED_INT, nullptr));
+//}
 
-    Shader shader = renderer.GetShader(SHADER_BASIC_TEXTURE);
-    shader.Bind();
-    shader.SetUniformMat4fv("modelMatrix", glm::mat4(1.0f));
-    shader.SetUniformMat4fv("viewMatrix", renderer.GetCamera().GetViewMatrix());
-    shader.SetUniformMat4fv("projMatrix", renderer.GetProjMatrix());
-
-    GLCall(glDrawElements(GL_TRIANGLES, m_Ib->GetCount(), GL_UNSIGNED_INT, nullptr));
-}
-
-bool Chunk::IsBlockInChunkBound(const Block &block, Direction d) {
+bool Chunk::IsBlockInChunkBound(const Block &block, Direction d) const {
     glm::vec3 cubePosition = block.GetPosition();
-    if (cubePosition.x == 0 && d == WEST) return true;
-    if (cubePosition.x == CHUNK_X-1 && d == EAST) return true;
-    if (cubePosition.y == 0 && d == DOWN) return true;
-    if (cubePosition.y == CHUNK_Y-1 && d == UP) return true;
+    if (cubePosition.x - m_Position.x == 0 && d == WEST) return true;
+    if (cubePosition.x - m_Position.x == CHUNK_X-1 && d == EAST) return true;
+    if (cubePosition.y - m_Position.y == 0 && d == DOWN) return true;
+    if (cubePosition.y - m_Position.y == CHUNK_Y-1 && d == UP) return true;
     if (cubePosition.z == 0 && d == NORTH) return true;
     if (cubePosition.z == CHUNK_Z-1 && d == SOUTH) return true;
 

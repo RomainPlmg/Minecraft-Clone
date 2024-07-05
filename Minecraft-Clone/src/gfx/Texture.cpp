@@ -19,7 +19,7 @@ Texture::Texture(const std::string& path): m_RendererID(0), m_Width(0), m_Height
         LoadFromFile(path);
     } else
     {
-        LoadFromFile("../assets/textures/block/undefined.png");
+        LoadFromFile("./assets/textures/block/undefined.png");
     }
 }
 

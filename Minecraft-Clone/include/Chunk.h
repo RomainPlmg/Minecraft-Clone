@@ -9,7 +9,7 @@ constexpr int CHUNK_Y = 256;
 constexpr int CHUNK_Z = 16;
 constexpr int NB_BLOCKS_CHUNK = CHUNK_X * CHUNK_Y * CHUNK_Z;
 
-class Chunk final : public Drawable {
+class Chunk {
 private:
     glm::vec2 m_Position;
 
@@ -22,7 +22,7 @@ private:
     Texture *m_Texture;
 
     /* Methods */
-    bool IsBlockInChunkBound(const Block& block, Direction d);
+    bool IsBlockInChunkBound(const Block& block, Direction d) const;
     void AddFace(const glm::vec3& position, Direction d);
 
 public:
@@ -31,7 +31,6 @@ public:
 
     /* Methods */
     void Update();
-    void Draw(const Renderer &renderer) override;
 
     /* Getters */
     inline Block& GetCube(const glm::vec3& position) {return m_Blocks[(int)position.x * (CHUNK_Y * CHUNK_Z) + (int)position.y * CHUNK_Z + (int)position.z]; }

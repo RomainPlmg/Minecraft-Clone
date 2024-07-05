@@ -4,7 +4,7 @@
 #include "Transformable.h"
 #include <vector>
 
-constexpr std::array<GLfloat, 72> BLOCK_VERTICES {
+constexpr GLfloat BLOCK_VERTICES[72] {
          0.5f, -0.5f, -0.5f, // North face
         -0.5f, -0.5f, -0.5f,
         -0.5f,  0.5f, -0.5f,
@@ -36,14 +36,14 @@ constexpr std::array<GLfloat, 72> BLOCK_VERTICES {
         -0.5f, -0.5f,  0.5f
 };
 
-constexpr std::array<GLfloat, 8> BLOCK_UV {
+constexpr GLfloat BLOCK_UV[8] {
         0.0f, 0.0f,
         1.0f, 0.0f,
         1.0f, 1.0f,
         0.0f, 1.0f,
 };
 
-constexpr std::array<GLuint, 36> FACE_INDICES {
+constexpr GLuint FACE_INDICES[36] {
         0, 1, 3, 1, 2, 3
 };
 

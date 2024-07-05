@@ -1,4 +1,2 @@
-bin/
-cmake-build-debug/
-build/
-.idea/
+x64/
+.vs/

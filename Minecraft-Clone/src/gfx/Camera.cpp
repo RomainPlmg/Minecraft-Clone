@@ -49,7 +49,7 @@ m_Zoom(ZOOM)
 
 /* Methods */
 void Camera::ProcessKeyboard(Direction direction) {
-    float velocity = m_MovementSpeed * Timer::getDeltaTime();
+    float velocity = m_MovementSpeed * (float)Timer::getDeltaTime();
 
     switch (direction) {
     case NORTH:
@@ -80,8 +80,8 @@ void Camera::ProcessMouseMovement(double offsetX, double offsetY, bool constrain
     offsetX *= m_MouseSensitivity;
     offsetY *= m_MouseSensitivity;
 
-    m_Yaw   += offsetX;
-    m_Pitch += offsetY;
+    m_Yaw   += (float)offsetX;
+    m_Pitch += (float)offsetY;
 
     // make sure that when pitch is out of bounds, screen doesn't get flipped
     if (constrainPitch) {

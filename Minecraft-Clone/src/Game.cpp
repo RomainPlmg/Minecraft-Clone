@@ -18,8 +18,8 @@ void Game::Setup(const int width, const int height) {
 void Game::Run() {
     Texture crossTex;
     Texture dirtTex;
-    crossTex.LoadFromFile("../assets/textures/ui/crosshair.png");
-    dirtTex.LoadFromFile("../assets/textures/block/stone.png");
+    crossTex.LoadFromFile("./assets/textures/ui/crosshair.png");
+    dirtTex.LoadFromFile("./assets/textures/block/stone.png");
 
     Sprite crosshair(crossTex);
     crosshair.Scale(glm::vec3(0.06f, 0.04f, 0.0f));
@@ -39,7 +39,7 @@ void Game::Run() {
 
         m_Window->ProcessInput();
 
-        chunk.Draw(m_Window->GetRenderer());
+        //chunk.Draw(m_Window->GetRenderer());
         crosshair.Draw(m_Window->GetRenderer());
 
         /* Swap front and back buffers */

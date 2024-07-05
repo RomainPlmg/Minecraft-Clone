@@ -15,7 +15,7 @@ Renderer::Renderer(float width, float height) {
 
     /* Create shader programs */
     m_Shaders[SHADER_NONE] = nullptr;
-    m_Shaders[SHADER_BASIC_TEXTURE] = std::make_unique<Shader>("../assets/shaders/basic_texture.vsh", "../assets/shaders/basic_texture.fsh");
+    m_Shaders[SHADER_BASIC_TEXTURE] = std::make_unique<Shader>("./assets/shaders/basic_texture.vsh", "./assets/shaders/basic_texture.fsh");
 }
 
 void Renderer::Clear(float red, float green, float blue, float alpha) const {
